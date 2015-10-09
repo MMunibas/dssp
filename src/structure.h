@@ -160,6 +160,12 @@ class MResidue
 
 	MResidueType		GetType() const					{ return mType; }
 
+  MAtom&    GetCAlpha()      { return mCA; }
+  MAtom&    GetC()           { return mC; }
+  MAtom&    GetN()           { return mN; }
+  MAtom&    GetO()           { return mO; }
+  MAtom&    GetH()           { return mH; }
+  
 	const MAtom&		GetCAlpha() const				{ return mCA; }
 	const MAtom&		GetC() const					{ return mC; }
 	const MAtom&		GetN() const					{ return mN; }
