@@ -311,9 +311,9 @@ void withTraj(MProtein& a, string& input, io::filtering_stream<io::input>& in, p
     // and finally report the secondary structure in the DSSP format
     // either to cout or an (optionally compressed) file.
     if (FileOutput)
-      WriteDSSP(a, out);
+      WriteDSSP_short(a, out);
     else
-      WriteDSSP(a, cout);
+      WriteDSSP_short(a, cout);
     
     //increment terminal progress bar
     ++show_progress;
