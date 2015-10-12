@@ -264,6 +264,9 @@ void WriteDSSP(MProtein& protein, ostream& os)
     }
 }
 
+/*
+ * A shorter version of the dssp output for trajectories, where only the last block is printed
+ */
 void WriteDSSP_short(MProtein& protein, ostream& os)
 {
     // per residue information
@@ -298,4 +301,64 @@ void WriteDSSP_short(MProtein& protein, ostream& os)
         os << ResidueToDSSPLine(*residue) << endl;
         last = residue;
     }
+}
+
+/*
+ * An even shorter output in csv format
+ * Number of rows will be number of frames from trajectory file
+ * Number of columns will be number of residues
+ */
+void WriteDSSP_ultra_short_csv(MProtein& protein, ostream& os)
+{
+  
+  string toPrint="";
+  
+  for(const MChain* ch : protein.GetChains())
+  {
+    
+    for(const MResidue* res : ch->GetResidues())
+    {
+      
+      char ss;
+      switch (res->GetSecondaryStructure())
+      {
+        case alphahelix:
+          ss = 'H';
+          break;
+        case betabridge:
+          ss = 'B';
+          break;
+        case strand:
+          ss = 'E';
+          break;
+        case helix_3:
+          ss = 'G';
+          break;
+        case helix_5:
+          ss = 'I';
+          break;
+        case turn:
+          ss = 'T';
+          break;
+        case bend:
+          ss = 'S';
+          break;
+        case loop:
+          ss = ' ';
+          break;
+      }
+      
+      toPrint += "\"";
+      toPrint += ss;
+      toPrint += "\"";
+      
+      if(res->Next() != nullptr)
+        toPrint += ',';
+      
+    }// res loop
+    
+  }// chain loop
+  
+  os << toPrint << endl;
+  
 }

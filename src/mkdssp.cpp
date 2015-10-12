@@ -218,6 +218,9 @@ void withTraj(MProtein& a, string& input, io::filtering_stream<io::input>& in, p
   else
     a.ReadPDB(in);
   
+  // keep an initial copy of the MProtein
+//   MProtein copy(a);
+  
   bool FileOutput = vm.count("output");
   string output;
   ofstream outfile;
@@ -251,7 +254,12 @@ void withTraj(MProtein& a, string& input, io::filtering_stream<io::input>& in, p
   dcdf.read_header();
   //dcdf.printHeader();
   
-  boost::progress_display show_progress(dcdf.getNFILE());
+  // when writing output to a file we may want to have a progress bar in the terminal to estimate remaining time
+  boost::progress_display *show_progress = nullptr;
+  if(FileOutput)
+  {
+    show_progress = new boost::progress_display(dcdf.getNFILE());
+  }
 
   // important : coordinates from trajectory files are always in simple precision so need to cast to double later
   const float *x,*y,*z;
@@ -280,6 +288,10 @@ void withTraj(MProtein& a, string& input, io::filtering_stream<io::input>& in, p
       vector<MResidue*>& residues = chain->GetResidues();
       for(MResidue* res : residues)
       {
+        
+        //reinitialise secondary structure to nothing
+        res->SetSecondaryStructure(loop);
+        
         // get references to backbone atoms
         MAtom& N  = res->GetN();
         MAtom& CA = res->GetCAlpha();
@@ -305,19 +317,24 @@ void withTraj(MProtein& a, string& input, io::filtering_stream<io::input>& in, p
 
     crds.clear();
     
+    // load the initial copy
+//     a = copy;
+    
     // then calculate the secondary structure
     a.CalculateSecondaryStructure();
     
     // and finally report the secondary structure in the DSSP format
     // either to cout or an (optionally compressed) file.
     if (FileOutput)
-      WriteDSSP_short(a, out);
+    {
+      WriteDSSP_ultra_short_csv(a, out);
+      //increment terminal progress bar
+      show_progress->operator++();
+    }
     else
-      WriteDSSP_short(a, cout);
-    
-    //increment terminal progress bar
-    ++show_progress;
-    
+      WriteDSSP_ultra_short_csv(a, cout);
+
+
   } // loop over all dcd frames
   
 }
