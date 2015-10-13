@@ -27,17 +27,17 @@ LIBS				= $(BOOST_LIBS:%=boost_%$(BOOST_LIB_SUFFIX)) z bz2
 DEFINES				= USE_COMPRESSION LINUX VERSION='"$(VERSION)"'
 CXX				= g++ -std=c++11
 
-CFLAGS				+= $(INC_DIR:%=-I%) -iquote src -Wall -Wno-multichar -pthread
+CFLAGS				+= $(INC_DIR:%=-I%) -Wall -Wno-multichar -pthread
 LDOPTS				+= $(LIB_DIR:%=-L%) $(LIBS:%=-l%) -pthread
 
 OBJ_DIR				= obj
 
 ifeq ($(DEBUG),1)
 OBJ_DIR				:= $(OBJ_DIR).dbg
-CFLAGS				+= -g3
+CFLAGS				+= -g -pg
 else
 DEFINES				+= NDEBUG
-CFLAGS				+= -O3 -march=native -ffast-math
+CFLAGS				+= -O3 
 endif
 
 CFLAGS				+= $(DEFINES:%=-D%)
@@ -50,9 +50,9 @@ OBJECTS = $(OBJ_DIR)/mkdssp.o $(OBJ_DIR)/dssp.o $(OBJ_DIR)/primitives-3d.o $(OBJ
 
 mkdssp_dcd: $(OBJECTS)
 	echo linking $@
-	$(CXX) -o $@ $^ $(LDOPTS)
+	$(CXX) -o $@ $^ $(CFLAGS) $(LDOPTS)
 
-include $(OBJECTS:%.o=%.d)
+# include $(OBJECTS:%.o=%.d)
 
 $(OBJECTS:.o=.d):
 
@@ -61,7 +61,7 @@ $(OBJ_DIR):
 
 $(OBJ_DIR)/%.o: %.cpp | $(OBJ_DIR)
 	echo compiling $@
-	$(CXX) -MD -c -o $@ $< $(CFLAGS)
+	$(CXX) -c -o $@ $< $(CFLAGS)
 
 clean:
 # 	install -d $(BIN_DIR) $(MAN_DIR)

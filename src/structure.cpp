@@ -1052,7 +1052,12 @@ void MProtein::ReadPDB(istream& is, bool cAlphaOnly)
 	bool atomSeen = false;
 	
 //   if(is.eof())
-//     is.seekg(ios_base::beg);
+//   {
+//     if(VERBOSE) cerr << "PDB eof found but nothing done yet ! rewinding file ..." << endl;
+//     is.seekg(0);
+//   }
+  
+  //if(VERBOSE) cerr << "Position : " << is.tellg() << endl;
   
 	while (not is.eof())
 	{
