@@ -326,6 +326,7 @@ class MProtein
   public:
 						MProtein();
 						MProtein(const std::string& inID, MChain* inChain);
+// 						MProtein(const MProtein& ref);
 						~MProtein();
 
 //						MProtein(std::istream& is, bool inCAlphaOnly = false);
@@ -379,7 +380,10 @@ class MProtein
 	// statistics
 	uint32				GetNrOfHBondsInParallelBridges() const				{ return mNrOfHBondsInParallelBridges; }
 	uint32				GetNrOfHBondsInAntiparallelBridges() const			{ return mNrOfHBondsInAntiparallelBridges; }
-
+  uint32        GetResidueCount() const { return mResidueCount; }
+  uint32        GetChainBreaks() const { return mChainBreaks; }
+  uint32        GetIgnoredWaterMolecules() const { return mIgnoredWaterMolecules; }
+  
 	void				GetResiduesPerAlphaHelixHistogram(uint32 outHistogram[30]) const;
 	void				GetParallelBridgesPerLadderHistogram(uint32 outHistogram[30]) const;
 	void				GetAntiparallelBridgesPerLadderHistogram(uint32 outHistogram[30]) const;

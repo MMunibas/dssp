@@ -1004,6 +1004,27 @@ MProtein::MProtein(const string& inID, MChain* inChain)
 	mChains.push_back(inChain);
 }
 
+//a copy constructor useful when analysing MD
+// MProtein::MProtein(const MProtein& ref)
+//   : mID(ref.GetID())
+//   , mHeader(ref.GetHeader())
+//   , mCompound(ref.GetCompound)
+//   , mSource(ref.GetSource())
+//   , mAuthor(ref.GetAuthor())
+//   , mResidueCount(ref.GetResidueCount())
+//   , mChainBreaks(ref.GetChainBreaks())
+//   , mIgnoredWaterMolecules(ref.GetIgnoredWaterMolecules())
+//   , mNrOfHBondsInParallelBridges(ref.GetNrOfHBondsInParallelBridges())
+//   , mNrOfHBondsInAntiparallelBridges(ref.GetNrOfHBondsInAntiparallelBridges())
+// {
+//   mDbRef = vector<string>(GetDbRef());
+//   mChains;
+//   mSSBonds;
+//   mParallelBridgesPerLadderHistogram;
+//   mAntiparallelBridgesPerLadderHistogram;
+//   mLaddersPerSheetHistogram;
+// }
+
 MProtein::~MProtein()
 {
 	foreach (MChain* chain, mChains)
@@ -1030,6 +1051,9 @@ void MProtein::ReadPDB(istream& is, bool cAlphaOnly)
 	char firstAltLoc = 0;
 	bool atomSeen = false;
 	
+//   if(is.eof())
+//     is.seekg(ios_base::beg);
+  
 	while (not is.eof())
 	{
 		string line;
