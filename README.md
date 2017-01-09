@@ -24,8 +24,6 @@ Use the provided makefile for compiling ; edit the make.config if the path to Bo
 ## LICENSING
 ----------------------------------------------
 
-Need to clarify compatibility of licenses.
-
 Original work from Maarten L. Hekkelman ==> Distributed under the Boost Software License, Version 1.0 ; see LICENSE.orig.txt
 
 Code for reading DCD files, from Florent Hedin ==>  Distributed under GNU General Public License version 3 or later
